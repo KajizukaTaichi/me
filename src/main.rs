@@ -17,14 +17,14 @@ struct Cli {
     path: String,
 
     #[arg(long, short)]
-    speed: f32,
+    speed: Option<f32>,
 }
 
 fn main() {
     clear().unwrap();
     let cli = Cli::parse();
     println!("Play {} music\n", &cli.path);
-    play(&cli.path, cli.speed)
+    play(&cli.path, cli.speed.unwrap_or(1.0))
 }
 
 fn play(path: &str, speed: f32) {
