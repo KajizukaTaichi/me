@@ -41,7 +41,7 @@ fn play(path: &str, speed: f32) {
     let mut rl = DefaultEditor::new().unwrap();
 
     loop {
-        println!("Commands: [p]Pause, [r]Restart, [q]Quit [s]Speed [c]Current [v]Volume");
+        println!("Commands: [p]Pause [r]Restart [q]Quit [s]Speed [c]Current [v]Volume");
         let command = rl.readline("> ").unwrap().trim().to_string();
         rl.add_history_entry(&command).unwrap_or_default();
         let command: Vec<&str> = command.split_whitespace().collect();
