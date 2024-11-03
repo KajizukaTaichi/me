@@ -22,7 +22,10 @@ struct Cli {
 fn main() {
     let cli = Cli::parse();
     println!("Play {} music", &cli.path.join(", "));
-    play(cli.path, cli.speed.unwrap_or(1.0))
+    let speed = cli.speed.unwrap_or(1.0);
+    if 1.5 >= speed && speed >= 0.5 {
+        play(cli.path, speed)
+    }
 }
 
 fn play(path: Vec<String>, speed: f32) {
