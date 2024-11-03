@@ -111,6 +111,12 @@ fn play(path: &str, speed: f32) {
                         println!("Volume is {}", sink.volume());
                     }
                 }
+                "a" => {
+                    let file = File::open(command.get(1).unwrap()).unwrap();
+                    let source = Decoder::new(BufReader::new(file)).unwrap();
+                    sink.append(source);
+                    println!("Appended");
+                }
                 other => {
                     println!("Error! unknown command: `{other}`");
                 }
