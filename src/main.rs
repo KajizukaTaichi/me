@@ -4,6 +4,7 @@ use rodio::{Decoder, OutputStream, Sink};
 use rustyline::DefaultEditor;
 use std::fs::File;
 use std::io::BufReader;
+use std::time::Duration;
 
 #[derive(Parser, Clone, Debug)]
 #[command(
@@ -58,7 +59,20 @@ fn play(path: &str, speed: f32) {
                     println!("Playing is restarted")
                 }
                 "c" => {
-                    println!("Current playing position is {:?}", sink.get_pos())
+                    if let Some(pos) = command.get(1) {
+                        if let Ok(pos) = pos.parse() {
+                            let result = sink.try_seek(Duration::from_secs_f64(pos));
+                            if result.is_ok() {
+                                println!("Current playing position is changed")
+                            } else {
+                                println!("Error! {result:?}");
+                            }
+                        } else {
+                            println!("Error! it's not a number");
+                        }
+                    } else {
+                        println!("Current playing position is {:?}", sink.get_pos())
+                    }
                 }
                 "q" => {
                     sink.stop();
@@ -84,7 +98,7 @@ fn play(path: &str, speed: f32) {
                 "v" => {
                     if let Some(speed) = command.get(1) {
                         if let Ok(speed) = speed.parse() {
-                            if 1.5 >= speed && speed >= 0.5 {
+                            if 1.5 >= speed && speed >= 0.0 {
                                 sink.set_volume(speed);
                                 println!("Volume is changed");
                             } else {
